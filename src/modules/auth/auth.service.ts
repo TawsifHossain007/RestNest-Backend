@@ -77,7 +77,7 @@ const loginUserFromDB = async (payload: ILoginUser) => {
 const getMyProfileFromDB = async(userId : string) => {
     const user = await prisma.user.findUniqueOrThrow({
         where : {
-            email : userId
+            id : userId
         },
         omit : {
             password : true
