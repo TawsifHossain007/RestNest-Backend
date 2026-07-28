@@ -4,6 +4,8 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import httpStatus from "http-status-codes";
 import cookieParser from "cookie-parser";
+import { userRouter } from "./modules/user/user.route";
+import { authRouter } from "./modules/auth/auth.route";
 
 const app : Application = express();
 
@@ -20,5 +22,8 @@ app.use(
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
+
+// app.use("/api/users", userRouter)
+app.use("/api/auth", authRouter)
 
 export default app;
