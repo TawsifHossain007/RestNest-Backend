@@ -9,3 +9,8 @@ export interface IRegisterUserPayload {
     phone: string;
     status: UserStatus
 }
+
+export interface ILoginUser {
+    email: string;
+    password: string;
+}
