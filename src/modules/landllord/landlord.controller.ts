@@ -47,8 +47,9 @@ const deletePropertyFromDB = catchAsync(async(req: Request, res: Response, next:
     });
 })
 
+
 export const landlordController = {
     createProperty,
     updateProperty,
-    deletePropertyFromDB
+    deletePropertyFromDB,
 }

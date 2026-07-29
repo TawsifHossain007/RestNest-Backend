@@ -107,8 +107,10 @@ const deletePropertyFromDB = async(propertyId : string, landlordId: string) => {
   return null;
 }
 
+
+
 export const landlordServices = {
     createPropertyInDB,
     updatePropertyInDB,
-    deletePropertyFromDB
+    deletePropertyFromDB,
 }
