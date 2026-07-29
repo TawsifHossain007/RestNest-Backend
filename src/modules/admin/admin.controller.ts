@@ -56,9 +56,21 @@ const updateUserStatus = catchAsync(async(req: Request, res: Response, next: Nex
     });
 })
 
+const getAllRentalRequests = catchAsync(async(req: Request, res: Response, next: NextFunction)=> {
+    const result = await adminServices.getAllRentalRequestFromDB();
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Rental Requests Retrieved successfully",
+      data: { result },
+    });
+})
+
 export const adminController = {
     createCategory,
     getAllProperties,
     getAllUsers,
-    updateUserStatus
+    updateUserStatus,
+    getAllRentalRequests
 }

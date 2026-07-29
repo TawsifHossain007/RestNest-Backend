@@ -52,9 +52,16 @@ const updateUserStatusInDB = async (userId: string, adminId: string, status: Use
     return result;
 };
 
+const getAllRentalRequestFromDB = async() => {
+    const result = await prisma.rentalRequest.findMany()
+
+    return result;
+}
+
 export const adminServices = {
     createCategoryInDB,
     getAllPropertiesFromDB,
     getAllUsersFromDB,
-    updateUserStatusInDB
+    updateUserStatusInDB,
+    getAllRentalRequestFromDB
 }
