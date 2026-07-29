@@ -10,11 +10,11 @@ model Property {
   description    String
   address        String
   city           String
-  price          Decimal        // rent amount
+  price          Decimal    
   bedrooms       Int?
   bathrooms      Int?
   sizeSqft       Int?
-  amenities      String[]       // e.g. ["wifi","parking","AC"]
+  amenities      String[]      
   images         String[]
 
   status         PropertyStatus @default(AVAILABLE)
