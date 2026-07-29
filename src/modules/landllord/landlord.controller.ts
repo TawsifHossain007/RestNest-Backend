@@ -41,7 +41,7 @@ const deletePropertyFromDB = catchAsync(async(req: Request, res: Response, next:
 
     sendResponse(res, {
       success: true,
-      statusCode: httpStatus.CREATED,
+      statusCode: httpStatus.OK,
       message: "Property Deleted successfully",
       data: { result },
     });

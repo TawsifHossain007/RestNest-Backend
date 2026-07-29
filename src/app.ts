@@ -7,6 +7,8 @@ import cookieParser from "cookie-parser";
 import { authRouter } from "./modules/auth/auth.route";
 import { landlordRouter } from "./modules/landllord/landlord.route";
 import { adminRouter } from "./modules/admin/admin.route";
+import { propertyRouter } from "./modules/properties/properties.route";
+import { categoryRouter } from "./modules/categories/category.route";
 
 
 const app : Application = express();
@@ -28,5 +30,6 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/landlord", landlordRouter)
 app.use("/api/auth", authRouter)
 app.use("/api/admin", adminRouter)
-
+app.use("/api/properties", propertyRouter)
+app.use("/api/categories", categoryRouter)
 export default app;
