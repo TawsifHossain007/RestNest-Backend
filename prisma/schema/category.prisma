@@ -1,0 +1,8 @@
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique   // apartment, house, studio, etc.
+  description String?
+  createdAt   DateTime @default(now())
+
+  properties  Property[]
+}

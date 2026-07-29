@@ -4,8 +4,7 @@ import { authServices } from "./auth.service";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status";
 
-const registerUser = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
+const registerUser = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const payload = req.body;
 
     const result = await authServices.registerUserInDB(payload);

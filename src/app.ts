@@ -4,8 +4,10 @@ import cors from "cors";
 import bcrypt from "bcryptjs";
 import httpStatus from "http-status-codes";
 import cookieParser from "cookie-parser";
-import { userRouter } from "./modules/user/user.route";
 import { authRouter } from "./modules/auth/auth.route";
+import { landlordRouter } from "./modules/landllord/landlord.route";
+import { adminRouter } from "./modules/admin/admin.route";
+
 
 const app : Application = express();
 
@@ -23,7 +25,8 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello, World!");
 });
 
-// app.use("/api/users", userRouter)
+app.use("/api/landlord", landlordRouter)
 app.use("/api/auth", authRouter)
+app.use("/api/admin", adminRouter)
 
 export default app;
