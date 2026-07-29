@@ -11,4 +11,5 @@ model User {
     updatedAt DateTime @updatedAt
 
     properties     Property[] 
+    rentalRequests RentalRequest[]
 }
