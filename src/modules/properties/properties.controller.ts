@@ -5,7 +5,8 @@ import { propertyService } from "./properties.service";
 import httpStatus from "http-status";
 
 const getAllProperties = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
-    const result = await propertyService.getAllPropertiesFromDB()
+    const query = req.query
+    const result = await propertyService.getAllPropertiesFromDB(query)
 
     sendResponse(res, {
       success: true,
