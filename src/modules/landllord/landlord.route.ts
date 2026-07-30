@@ -9,6 +9,7 @@ router.post("/properties", auth(Role.LANDLORD), landlordController.createPropert
 router.put("/properties/:id", auth(Role.LANDLORD), landlordController.updateProperty)
 router.delete("/properties/:id", auth(Role.LANDLORD), landlordController.deletePropertyFromDB)
 router.get("/requests", auth(Role.LANDLORD), landlordController.getMyPropertyReq)
+router.get("/properties/reviews", auth(Role.LANDLORD), landlordController.getMyPropertyReviews)
 router.patch("/requests/:id", auth(Role.LANDLORD), landlordController.updateRentalReq)
 
 

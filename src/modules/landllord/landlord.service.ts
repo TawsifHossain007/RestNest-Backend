@@ -158,10 +158,23 @@ const updateRentalReqInDB = async (
   return result;
 };
 
+const getMyPropertyReviewsFromDB = async(landlordId : string) => {
+    const result = await prisma.review.findMany({
+        where : {
+            property : {
+                landlordId : landlordId
+            }
+        }
+    })
+
+    return result;
+}
+
 export const landlordServices = {
   createPropertyInDB,
   updatePropertyInDB,
   deletePropertyFromDB,
   getMyPropertyReqFromDB,
   updateRentalReqInDB,
+  getMyPropertyReviewsFromDB
 };
