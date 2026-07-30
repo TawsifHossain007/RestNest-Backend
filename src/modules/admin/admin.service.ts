@@ -15,6 +15,16 @@ const createCategoryInDB = async(payload : ICategory) => {
     return result;
 }
 
+const deleteCategoryFromDB = async(categoryID : string) => {
+    const result = await prisma.category.delete({
+        where : {
+            id : categoryID
+        }
+    })
+
+    return result;
+}
+
 const getAllPropertiesFromDB = async() => {
     const result = await prisma.property.findMany()
 
@@ -63,5 +73,6 @@ export const adminServices = {
     getAllPropertiesFromDB,
     getAllUsersFromDB,
     updateUserStatusInDB,
-    getAllRentalRequestFromDB
+    getAllRentalRequestFromDB,
+    deleteCategoryFromDB
 }

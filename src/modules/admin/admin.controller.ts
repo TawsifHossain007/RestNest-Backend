@@ -16,6 +16,18 @@ const createCategory = catchAsync(async(req: Request, res: Response, next: NextF
     });
 })
 
+const deleteCategory = catchAsync(async(req: Request, res: Response, next: NextFunction) => {
+    const categoryId = req.params.id;
+    const result = await adminServices.deleteCategoryFromDB(categoryId as string);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Category Deleted successfully",
+      data: { result },
+    });
+})
+
 
 const getAllProperties = catchAsync(async(req: Request, res: Response, next: NextFunction)=> {
     
@@ -72,5 +84,6 @@ export const adminController = {
     getAllProperties,
     getAllUsers,
     updateUserStatus,
-    getAllRentalRequests
+    getAllRentalRequests,
+    deleteCategory
 }

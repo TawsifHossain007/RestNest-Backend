@@ -19,17 +19,19 @@ const createRentalReqInDB = async (
       moveInDate: moveInDate ? new Date(moveInDate) : undefined,
       tenantId,
       propertyId,
+
     },
     include : {
         property : {
             select : {
                 landlord : {
                     select : {
-                        name : true
+                        name : true,
+                        id : true
                     }
                 }
             }
-        }
+        },
     }
   });
 
@@ -71,6 +73,8 @@ const getMyRentalRequestByIdFromDB = async(tenantId : string, rentalReqId : stri
 
     return result
 }
+
+
 
 export const rentalService = {
   createRentalReqInDB,
