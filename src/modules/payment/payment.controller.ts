@@ -13,11 +13,29 @@ const createCheckOutSession = catchAsync(async(req: Request, res: Response, next
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "Property Deleted successfully",
+      message: "CheckOut Session Created successfully",
       data: { result },
     });
 })
 
+const handleWebhook = catchAsync(
+    async( req : Request, res : Response, next : NextFunction) => {
+        const event = req.body as Buffer;
+        const signature = req.headers['stripe-signature']!;
+
+        await paymentService.handleWebhookInDB(event, signature as string)
+
+        sendResponse(res, {
+            success : true,
+            statusCode : 200,
+            message : "Webhook triggered successfully",
+            data : null
+        })
+    }
+)
+
+
 export const paymentController = {
-    createCheckOutSession
+    createCheckOutSession,
+    handleWebhook
 }

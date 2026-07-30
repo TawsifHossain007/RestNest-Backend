@@ -1,11 +1,12 @@
+import Stripe from "stripe";
 import config from "../../config";
 import { prisma } from "../../lib/prisma";
 import { stripe } from "../../lib/stripe";
+import { handleCheckoutCompleted, handleCheckoutFailed } from "./payment.utils";
 
 const createCheckoutSession = async (userId: string, rentalRequestId: string) => {
   const transactionResult = await prisma.$transaction(async (tx) => {
 
-    // 1. Fetch the rental request and validate ownership + status
     const rentalRequest = await tx.rentalRequest.findUniqueOrThrow({
       where: { id: rentalRequestId },
       include: {
@@ -23,10 +24,10 @@ const createCheckoutSession = async (userId: string, rentalRequestId: string) =>
       throw new   Error("Payment can only be made for approved rental requests");
     }
 
-    // 2. Get or create Stripe customer (same pattern as your reference)
+
     const user = await tx.user.findUniqueOrThrow({ where: { id: userId } });
 
-    let stripeCustomerId = user.stripeCustomerId; // adjust field name to your schema
+    let stripeCustomerId = user.stripeCustomerId; 
     if (!stripeCustomerId) {
       const customer = await stripe.customers.create({
         email: user.email,
@@ -41,7 +42,6 @@ const createCheckoutSession = async (userId: string, rentalRequestId: string) =>
       });
     }
 
-    // 3. Build a dynamic line item from the property's rent amount
 const amountInCents = Math.round(Number(rentalRequest.property.price) * 100);
     const session = await stripe.checkout.sessions.create({
       line_items: [
@@ -56,7 +56,7 @@ const amountInCents = Math.round(Number(rentalRequest.property.price) * 100);
           quantity: 1,
         },
       ],
-      mode: "payment", // one-time, not subscription
+      mode: "payment",
       customer: stripeCustomerId,
       payment_method_types: ["card"],
       success_url: `${config.appUrl}/rentals/${rentalRequestId}?success=true`,
@@ -67,7 +67,6 @@ const amountInCents = Math.round(Number(rentalRequest.property.price) * 100);
       },
     });
 
-    // 4. Create a pending Payment record tied to this session
     await tx.payment.create({
       data: {
         rentalRequestId: rentalRequest.id,
@@ -76,7 +75,7 @@ const amountInCents = Math.round(Number(rentalRequest.property.price) * 100);
         provider: "STRIPE",
         method : "CARD",
         status: "PENDING",
-        transactionId: session.id, // Stripe session id, updated to payment_intent later if you prefer
+        transactionId: session.id,
       },
     });
 
@@ -88,6 +87,30 @@ const amountInCents = Math.round(Number(rentalRequest.property.price) * 100);
   };
 };
 
+const handleWebhookInDB = async (payload: Buffer, signature: string) => {
+  const endpointSecret = config.stripeWebhookSecret;
+  const event = stripe.webhooks.constructEvent(payload, signature, endpointSecret);
+
+  switch (event.type) {
+    case "checkout.session.completed":
+      // Occurs when a Checkout Session has been successfully completed
+      await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+      break;
+
+    case "checkout.session.expired":
+      // Occurs when a session is abandoned or times out — release the row from PENDING
+      await handleCheckoutFailed(event.data.object as Stripe.Checkout.Session);
+      break;
+      
+    default:
+      // Unexpected event type
+      console.log(`No events matched. Unhandled event type ${event.type}.`);
+      break;
+  }
+};
+
+
 export const paymentService = {
   createCheckoutSession,
+  handleWebhookInDB
 };

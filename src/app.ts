@@ -15,6 +15,10 @@ import { paymentRouter } from "./modules/payment/payment.route";
 
 const app : Application = express();
 
+const endpointSecret = config.stripeWebhookSecret;
+
+app.use("/api/payments/confirm", express.raw({ type: 'application/json' }))
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
