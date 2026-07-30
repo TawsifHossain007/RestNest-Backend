@@ -30,3 +30,8 @@ enum PaymentStatus {
   FAILED
   REFUNDED
 }
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+}

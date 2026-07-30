@@ -22,4 +22,5 @@ model Property {
   updatedAt      DateTime       @updatedAt
 
     rentalRequests RentalRequest[]
+    review Review[]
 }

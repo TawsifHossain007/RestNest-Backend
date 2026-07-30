@@ -1,0 +1,21 @@
+model Review {
+  id              String          @id @default(uuid())
+  rating          Int             // e.g. 1–5, enforce range in app-level validation
+  comment         String?
+
+  tenant          User            @relation(fields: [tenantId], references: [id])
+  tenantId        String
+
+  property        Property        @relation(fields: [propertyId], references: [id])
+  propertyId      String
+
+  // Ties the review to the specific completed stay, not just the property
+  rentalRequest   RentalRequest   @relation(fields: [rentalRequestId], references: [id])
+  rentalRequestId String          @unique   // one review per completed rental
+
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([propertyId])
+  @@index([tenantId])
+}
