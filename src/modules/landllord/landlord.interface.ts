@@ -1,4 +1,4 @@
-import { PropertyStatus } from "../../../generated/prisma/enums";
+import { PropertyStatus, RentalStatus } from "../../../generated/prisma/enums";
 
 export interface ICreatePropertyPayload {
   categoryId: string;      

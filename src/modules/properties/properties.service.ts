@@ -54,16 +54,6 @@ const getAllPropertiesFromDB = async (query: IPropertyQuery) => {
     });
   }
 
-  // City filter
-  if (query.city) {
-    andConditions.push({
-      city: {
-        contains: query.city,
-        mode: "insensitive",
-      },
-    });
-  }
-
   // Category filter (property "type")
   if (query.categoryId) {
     andConditions.push({
