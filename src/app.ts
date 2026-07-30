@@ -12,6 +12,8 @@ import { categoryRouter } from "./modules/categories/category.route";
 import { rentalRouter } from "./modules/rental/rental.route";
 import { paymentRouter } from "./modules/payment/payment.route";
 import { reviewRouter } from "./modules/reviews/reviews.route";
+import { notFound } from "./middleware/notFound";
+import { globalErrorHandler } from "./middleware/globalErrorHandler";
 
 
 const app : Application = express();
@@ -42,4 +44,9 @@ app.use("/api/categories", categoryRouter)
 app.use("/api/rentals", rentalRouter)
 app.use("/api/payments", paymentRouter)
 app.use("/api/reviews", reviewRouter)
+
+app.use(notFound)
+
+app.use(globalErrorHandler)
+
 export default app;
