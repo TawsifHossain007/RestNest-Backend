@@ -6,5 +6,7 @@ const router = Router()
 
 router.post("/create", auth(), paymentController.createCheckOutSession)
 router.post("/confirm", paymentController.handleWebhook)
+router.get("/", auth(), paymentController.getMyPayments)
+router.get("/:id", auth(), paymentController.getMyPaymentsByID)
 
 export const paymentRouter = router;

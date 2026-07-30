@@ -34,8 +34,36 @@ const handleWebhook = catchAsync(
     }
 )
 
+const getMyPayments = catchAsync(async(req : Request, res : Response, next : NextFunction)=>{
+    const userId = req.user?.id
+    const result = await paymentService.getMyPayments(userId as string)
+
+     sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My Payments Retrieved successfully",
+      data: { result },
+    });
+})
+
+const getMyPaymentsByID = catchAsync(async(req : Request, res : Response, next : NextFunction)=>{
+    const paymentId = req.params.id;
+    const userId = req.user?.id;
+
+    const result = await paymentService.getMyPaymentsById(userId as string, paymentId as string)
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "My Payments Retrieved successfully",
+      data: { result },
+    });
+})
+
 
 export const paymentController = {
     createCheckOutSession,
-    handleWebhook
+    handleWebhook,
+    getMyPayments,
+    getMyPaymentsByID
 }
